@@ -55,8 +55,9 @@ exit2:
 	jal done # stop program 
 	
 load_var: # manipulate variables
-
+	lw $v0, 0($a0) # carrega o valor de a1(endereco da label) em v0
+	jr $ra
 
 store_var: # manipulate variables
-
-
+	sw $a0, 0($v0) 
+	jr $ra

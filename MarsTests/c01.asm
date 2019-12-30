@@ -6,29 +6,37 @@
       str2: .asciiz "Digite o valor de h: "
       str3: .asciiz "Digite o valor de i: "
       str4: .asciiz "Digite o valor de j: "
+      
       f: .word 
-
+      g: .word 5
+      h: .word 2
+      i: .word 1
+      j: .word 3
 .text
 .globl main
 main: 
-      la $a0, str1 # print str1
-      jal print_string
-      jal read_int # read first number
+      
+      # repeat this struct if you want the users input
+      #la $a0, str1 # print str1
+      #jal print_string
+      #jal read_int # read first number
+    
+      la $a0, g 
+      jal load_var
       move $s1, $v0 # set value of variable g
       
-      la $a0, str2 # print str2
-      jal print_string
-      jal read_int # read second number
+      
+      
+      la $a0, h # load adress of label
+      jal load_var
       move $s2, $v0 # set value of variable h
       
-      la $a0, str3 # print str3
-      jal print_string
-      jal read_int # read third number
+      la $a0, i 
+      jal load_var
       move $s3, $v0 # set value of variable i
             
-      la $a0, str4 # print str4
-      jal print_string
-      jal read_int # read fourth number
+      la $a0, j 
+      jal load_var
       move $s4, $v0 # set value of variable j
       
       #Realizando o calculo
