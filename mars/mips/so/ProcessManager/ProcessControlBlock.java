@@ -1,43 +1,47 @@
 package mars.mips.so.ProcessManager;
 
+import javax.management.ConstructorParameters;
+
 import mars.mips.hardware.RegisterFile;
 
 public class ProcessControlBlock {
 	
 	private int [] regs = new int[32]; // conteudo do registrador
 	
-	private int endInit; // endereco do inicio do programa
 	private int pid; // indentificacao do processo
-	private int stateProcess; 
+	private int stateProcess; // 1 - running 2 - stopped 3 - blocked 
+	private int priority;
+	private static int pc;
+	private int inf; // endereco do inicio do programa
 	
-	public ProcessControlBlock(int endInit, int pid, int stateProcess) {
-		setEndInit(endInit);
-		setPid(pid);
-		setStateProcess(stateProcess);
+	public int getInf() {
+		return inf;
 	}
-	
-	// methods
-	public void copyRegToPcb() {
-		int sizeRegisters = 32;
-		for(int i = 0; i < sizeRegisters; i++) {
-			this.regs[i] = RegisterFile.getValue(i);
-		}
+
+	public void setInf(int inf) {
+		this.inf = inf;
 	}
-	
-	public void copyPcbToReg() {
-		int sizeRegisters = 32;
-		for(int i = 0; i < sizeRegisters; i++) { 
-			RegisterFile.updateRegister(i, this.regs[i]); 
-		}
-	}
+
+	private int sup; 
 	
 	
-	public int getEndInit() {
-		return endInit;
+	public static int getPc() {
+		return pc;
 	}
-	public void setEndInit(int endInit) {
-		this.endInit = endInit;
+
+	public static void setPc(int pc) {
+		pc = pc;
 	}
+	
+	
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+	
 	public int getPid() {
 		return pid;
 	}
@@ -51,6 +55,31 @@ public class ProcessControlBlock {
 		this.stateProcess = stateProcess;
 	} 
 	
-	
+	// methods
+		
+		//get
+		public void copyRegToPcb() {
+			int sizeRegisters = 32;
+			for(int i = 0; i < sizeRegisters; i++) {
+				this.regs[i] = RegisterFile.getValue(i);
+			}
+		}
+		
+		// set
+		public void copyPcbToReg() {
+			int sizeRegisters = 32;
+			for(int i = 0; i < sizeRegisters; i++) { 
+				RegisterFile.updateRegister(i, this.regs[i]); 
+			}
+			RegisterFile.setProgramCounter(getPc());
+		}
+
+		public int getSup() {
+			return sup;
+		}
+
+		public void setSup(int sup) {
+			this.sup = sup;
+		}
 	
 }

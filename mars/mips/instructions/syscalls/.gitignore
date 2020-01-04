@@ -45,3 +45,6 @@
 /Tone.class
 /ToneGenerator.class
 /MySyscall.class
+/SyscallFork.class
+/SyscallProcessChange.class
+/SyscallProcessTerminate.class

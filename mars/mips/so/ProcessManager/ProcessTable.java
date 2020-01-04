@@ -4,12 +4,18 @@ import java.util.Queue;
 import java.util.LinkedList;
 
 public class ProcessTable {
-	public ProcessControlBlock running; 
+	public static ProcessControlBlock running; 
 	
+	// lista de processos prontos
 	public static LinkedList<ProcessControlBlock> readyProcesses = new LinkedList<ProcessControlBlock>();
 	
-	public ProcessControlBlock newPCB(int endInit, int pid, int stateProcess) {
-		ProcessControlBlock pcb = new ProcessControlBlock(endInit, pid, stateProcess);
+	public static ProcessControlBlock newProcess(int id, int end, int priority) {
+		ProcessControlBlock pcb = new ProcessControlBlock();
+		
+		pcb.setPriority(priority);
+		pcb.setStateProcess(1);
+		pcb.setSup(id);
+		pcb.setInf(end);
 		
 		return pcb;
 	}
@@ -22,8 +28,8 @@ public class ProcessTable {
 		return running;
 	}
 
-	public void setRunning(ProcessControlBlock running) {
-		this.running = running;
+	public static void setRunning(ProcessControlBlock running) {
+		running = running;
 	}
 	
 }
