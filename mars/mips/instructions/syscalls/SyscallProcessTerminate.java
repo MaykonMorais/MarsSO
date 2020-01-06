@@ -3,6 +3,7 @@ package mars.mips.instructions.syscalls;
 import mars.ProcessingException;
 import mars.ProgramStatement;
 import mars.mips.so.ProcessManager.ProcessTable;
+import mars.util.SystemIO;
 import mars.mips.instructions.syscalls.SyscallProcessChange;
 
 public class SyscallProcessTerminate extends AbstractSyscall {
@@ -17,8 +18,9 @@ public class SyscallProcessTerminate extends AbstractSyscall {
 	}
 	
 	public void terminateProcess() {
-		ProcessTable.running = null;
+		ProcessTable.setRunning(null);
 		
-		SyscallProcessChange.swap();		
+		ProcessTable.processChange();
+		SystemIO.printString("Processo Finalizado!!\n");
 	}
 }

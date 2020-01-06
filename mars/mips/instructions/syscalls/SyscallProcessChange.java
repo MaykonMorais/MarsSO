@@ -16,35 +16,6 @@ public class SyscallProcessChange extends AbstractSyscall{
 
 	@Override
 	public void simulate(ProgramStatement statement) throws ProcessingException {
-		swap();		
+		ProcessTable.processChange();		
 	}
-	
-	public static void swap() {
-		
-		if(ProcessTable.running != null) {
-			// salvar contexto atual
-			
-			ProcessTable.running.copyRegToPcb();
-			ProcessTable.running.setPc(RegisterFile.getProgramCounter());
-			
-			// adicionar novo processo 
-			ProcessTable.addProcess(ProcessTable.running);
-			ProcessTable.setRunning(Schedule.escalonar());
-			
-			if(ProcessTable.running == null) {
-				return;
-			}
-			
-			ProcessTable.running.setStateProcess(2); // state ready
-			ProcessTable.running.copyPcbToReg();
-			}
-		
-			else { 
-				ProcessTable.setRunning(Schedule.escalonar());
-				ProcessTable.running.setStateProcess(3); // 3 bloqueado
-				
-				ProcessTable.running.copyPcbToReg();
-			}
-		}
-	}
-	
+}
