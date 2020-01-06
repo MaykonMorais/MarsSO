@@ -2,6 +2,28 @@
 	errorString: .asciiz "Erro! numero negativo"
 
 .text
+
+.macro SyscallFork(%a0, %k0, %k1) # create a process
+	li $v0, 19 # load number syscall
+	la $a0, %a0 # load initial adress
+	la $k0, %k0
+	
+	subi $k0, $k0, 4
+	li $k1, %k1 # define priority
+	
+	syscall
+.end_macro
+
+.macro SyscallProcessChange 
+	li $v0, 20
+	syscall
+.end_macro
+
+.macro SyscallProcessTerminate
+	li $v0, 21
+	syscall
+.end_macro
+
 done: #para finalizar programa
 	li $v0, 10
 	syscall	
