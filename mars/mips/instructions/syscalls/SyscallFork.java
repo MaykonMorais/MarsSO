@@ -29,6 +29,9 @@ public class SyscallFork extends AbstractSyscall {
 		registers.add(RegisterFile.getValue(33));
 		registers.add(RegisterFile.getValue(34));
 		
+		// $a0 = initAdress, $a1 = pid,  
+		//ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), RegisterFile.getUserRegister("$a0").getValue(), "ready", RegisterFile.getUserRegister("$v1").getValue(), registers));
+		
 		
 		ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), 
 				RegisterFile.getUserRegister("$a1").getValue(), RegisterFile.getUserRegister("$a0").getValue(), "ready", RegisterFile.getUserRegister("$v1").getValue(), RegisterFile.getUserRegister("$a2").getValue(),

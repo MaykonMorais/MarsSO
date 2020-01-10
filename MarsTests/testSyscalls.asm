@@ -20,7 +20,6 @@ Idle:
 Programa1:
 	
 	addi $s1, $zero, 1 # valor inicial do contador
-
 	addi $s2, $zero, 10 # valor limite do contador
 
 	loop1: addi $s1, $s1, 1

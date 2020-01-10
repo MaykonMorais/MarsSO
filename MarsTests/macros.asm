@@ -13,7 +13,6 @@
 	syscall
 .end_macro
 
-
 .macro SyscallProcessChange 
 	li $v0, 20
 	li $a0, 1
