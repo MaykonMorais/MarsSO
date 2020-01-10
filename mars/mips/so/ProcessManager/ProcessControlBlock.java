@@ -36,6 +36,14 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 		setPriorityMin(priorityMin);
 		this.timeExec = 0;		
 	}
+	
+	public ProcessControlBlock(int initAdress, int pid, String stateProcess, int priority, List<Integer> context) {
+		setInitAdress(initAdress);
+		setPid(pid);
+		setStateProcess(stateProcess);
+		setPriority(priority);
+		setContexto(context);		
+	}
 
 	public ProcessControlBlock(int initAdress, int pid, String stateProcess, List<Integer> context) {
 		
