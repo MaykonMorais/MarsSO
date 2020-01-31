@@ -10,7 +10,8 @@ import mars.mips.so.ProcessManager.ProcessControlBlock;
 
 public class ProcessTable {
 	
-	private static ProcessControlBlock running;
+	private static ProcessControlBlock running; // processo em execucao
+	// lista de processos prontos
 	private static List<ProcessControlBlock> processListReady = new ArrayList<ProcessControlBlock>();
 	
 	
@@ -41,22 +42,18 @@ public class ProcessTable {
 	public static void processChange() {
 		
 		if(running != null) {
-			running.setStateProcess("ready");
+			running.setStateProcess("ready"); // mudando meu estado
 			running.setInitAdress(RegisterFile.getProgramCounter());
 			running.getContexto().clear();
-			for(int i = 0; i < RegisterFile.getRegisters().length; i++) {
-				running.getContexto().add(RegisterFile.getValue(i));
-			}
-			running.getContexto().add(RegisterFile.getValue(33));
-			running.getContexto().add(RegisterFile.getValue(34));
+			running.copyRegistersToPCB(); // salvando meus registradores
+			
 		}
 		
 		// adicionar switch se for  pedido outros tipos de prioridades
-		if(Schedule.router()) {
+		
+		if(Schedule.escalonar()) {
 			RegisterFile.setProgramCounter(running.getInitAdress());
-			for(int i = 0;  i < running.getContexto().size(); i++) {
-				RegisterFile.updateRegister(i, running.getContexto().get(i));
-			}
+			running.pcbToRegister();
 		}
 	}
 	

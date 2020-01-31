@@ -80,7 +80,7 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 		counterField.setEditable(false);
 		
 		countInterField = new JTextField("0", 10);
-		counterField.setEditable(false);
+		countInterField.setEditable(false);
 		
 		progressBarInst = new JProgressBar(JProgressBar.HORIZONTAL);
 		progressBarInst.setStringPainted(true);
@@ -102,8 +102,8 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 		c.gridheight = c.gridwidth = 1;
 		c.gridx = 3;
 		c.gridy = 1;
-		c.insets = new Insets(0, 0, 17, 0);
-		panel.add(counterField, c);
+		//c.insets = new Insets(0, 0, 17, 0);
+		//panel.add(counterField, c);
 
 		c.insets = new Insets(0, 0, 0, 0);
 		c.gridy++;
@@ -120,8 +120,8 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 		c.gridx = 1;
 		c.gridwidth = 2;
 		c.gridy = 1;
-		c.insets = new Insets(0, 0, 17, 0);
-		panel.add(new JLabel("Qtd Instructions: "	), c);
+		//c.insets = new Insets(0, 0, 17, 0);
+		//panel.add(new JLabel("Qtd Instructions: "	), c);
 				
 		c.insets = new Insets(0, 0, 0, 0);
 		c.gridx = 2;
@@ -161,7 +161,8 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 				if(countInst > (int)timerConfig.getValue()) {
 					execute = false;
 					++countInter; // interrupcoes
-					countInst = 0; // timer 
+					countInst = 0;
+					
 					ProcessTable.processChange();
 					SystemIO.printString("Change Process now \n");
 				}
@@ -170,7 +171,6 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 		}
 		
 	}
-	
 //	@Override
 	protected void initializePreGUI() {
 		countInst = 0; // progress bar
