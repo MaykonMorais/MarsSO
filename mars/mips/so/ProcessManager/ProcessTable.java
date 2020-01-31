@@ -9,8 +9,9 @@ import mars.mips.hardware.RegisterFile;
 import mars.mips.so.ProcessManager.ProcessControlBlock;
 
 public class ProcessTable {
+	public static String typeScheduler = "FIFO";
 	
-	private static ProcessControlBlock running; // processo em execucao
+	private static ProcessControlBlock running = new ProcessControlBlock(); // processo em execucao
 	// lista de processos prontos
 	private static List<ProcessControlBlock> processListReady = new ArrayList<ProcessControlBlock>();
 	
@@ -39,7 +40,7 @@ public class ProcessTable {
 	}
 	
 	
-	public static void processChange() {
+	public static void processChange(String metodo) {
 		
 		if(running != null) {
 			running.setStateProcess("ready"); // mudando meu estado
@@ -48,14 +49,42 @@ public class ProcessTable {
 			running.copyRegistersToPCB(); // salvando meus registradores
 			
 		}
+				
 		
-		// adicionar switch se for  pedido outros tipos de prioridades
-		
-		if(Schedule.escalonar()) {
+		if(metodo.equals("FIFO")) { // fifo
 			RegisterFile.setProgramCounter(running.getInitAdress());
+			Schedule.fifo();
+			running.pcbToRegister();
+		}
+		else if (metodo.equals("Fixa")) {
+			RegisterFile.setProgramCounter(running.getInitAdress());
+			
+			Schedule.fixedPriority();
+			running.pcbToRegister();
+		}
+		
+		else if (metodo.equals("Loteria")) {
+			RegisterFile.setProgramCounter(running.getInitAdress());
+			
+			Schedule.lottery();
 			running.pcbToRegister();
 		}
 	}
+	
+	public static String getTypeScheduler() {
+		return typeScheduler;
+	}
+
+	public static void setTypeScheduler(String typeScheduler) {
+		ProcessTable.typeScheduler = typeScheduler;
+	}
+	
+	
+	public static void endProcess(String metodo) {
+		running = null; // processo nao existe mais
+		processChange(metodo);
+	}
+	
 	
 	/*public static ProcessControlBlock running; 
 	

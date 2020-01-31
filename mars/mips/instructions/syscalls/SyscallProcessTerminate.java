@@ -20,7 +20,7 @@ public class SyscallProcessTerminate extends AbstractSyscall {
 	public void terminateProcess() {
 		ProcessTable.setRunning(null);
 		
-		ProcessTable.processChange();
+		ProcessTable.endProcess(ProcessTable.getTypeScheduler());
 		SystemIO.printString("Processo Finalizado!!\n");
 	}
 }

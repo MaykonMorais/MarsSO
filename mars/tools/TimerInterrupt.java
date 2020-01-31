@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Observable;
 
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,6 +24,7 @@ import mars.mips.hardware.MemoryAccessNotice;
 import mars.mips.instructions.BasicInstruction;
 import mars.mips.instructions.BasicInstructionFormat;
 import mars.mips.so.ProcessManager.ProcessTable;
+import mars.mips.so.ProcessManager.Schedule;
 import mars.util.SystemIO;
 
 public class TimerInterrupt extends AbstractMarsToolAndApplication {
@@ -33,6 +35,9 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
     
     private int counter = 0;
     private JTextField counterField;
+    
+    private JComboBox typePriority;
+    String[] typeOfPriority = {"FIFO","Fixa", "Loteria"};
     
     protected int countTimer = 10;
     
@@ -94,6 +99,8 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 		timerConfig.setToolTipText("input time to interrupt");
 		
 		
+		typePriority = new JComboBox(typeOfPriority);
+		
 		// Add them to the panel
 		
 		// Fields
@@ -114,7 +121,10 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 				
 		c.gridy++;
 		panel.add(timerConfig, c);
-				
+		
+		c.gridy++;
+		panel.add(typePriority, c);
+		
 		// Labels
 		c.anchor = GridBagConstraints.LINE_END;
 		c.gridx = 1;
@@ -140,15 +150,20 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 		c.gridx = 4;
 		c.gridy = 2;
 		panel.add(timerActive, c);
+		
+		c.gridx = 2;
+		c.gridy = 5;
+		panel.add(new JLabel("Priority: "), c);
 				
 		return panel;
 				
 	}
 	
 	protected void processMIPSUpdate(Observable resource, AccessNotice notice) {
-		execute = true;
+		
 		if(notice.getAccessType() != AccessNotice.READ) return;
 		MemoryAccessNotice m = (MemoryAccessNotice) notice;
+		
 		int a = m.getAddress();
 		if (a == lastAddress) return;
 		if(ProcessTable.getRunning()  != null) { // if list are not empty
@@ -163,7 +178,8 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 					++countInter; // interrupcoes
 					countInst = 0;
 					
-					ProcessTable.processChange();
+					ProcessTable.setTypeScheduler(typePriority.getSelectedItem().toString());
+					ProcessTable.processChange(typePriority.getSelectedItem().toString());
 					SystemIO.printString("Change Process now \n");
 				}
 			}

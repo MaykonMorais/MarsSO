@@ -9,6 +9,13 @@
 	syscall
 .end_macro
 
+.macro SyscallFork(%a0, %p)
+	li $v0, 19 # load number syscall
+	la $a0, %a0
+	la $v1 , %p
+	syscall
+.end_macro
+
 .macro SyscallProcessChange 
 	li $v0, 20
 	syscall

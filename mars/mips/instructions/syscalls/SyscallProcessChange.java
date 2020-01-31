@@ -16,7 +16,8 @@ public class SyscallProcessChange extends AbstractSyscall{
 
 	@Override
 	public void simulate(ProgramStatement statement) throws ProcessingException {
-		ProcessTable.processChange();
+		ProcessTable.processChange(ProcessTable.getTypeScheduler());
+		
 		SystemIO.printString("Processo Escalonado!\n");
 	}
 }

@@ -25,11 +25,6 @@ public class SyscallFork extends AbstractSyscall {
 		
 		contexto.copyRegistersToPCB(); // salvando contexto
 		
-		
-		// $a0 = initAdress, $a1 = pid,  
-		//ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), RegisterFile.getUserRegister("$a0").getValue(), "ready", RegisterFile.getUserRegister("$v1").getValue(), registers));
-		
-		
 		/*ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), 
 				RegisterFile.getUserRegister("$a1").getValue(), RegisterFile.getUserRegister("$a0").getValue(), "ready", RegisterFile.getUserRegister("$v1").getValue(), RegisterFile.getUserRegister("$a2").getValue(),
 				RegisterFile.getUserRegister("$a3").getValue(), registers));*/
@@ -38,6 +33,7 @@ public class SyscallFork extends AbstractSyscall {
 		 Adicionando processo na tabela de processo
 		 $a0 = label, $a1 = fim do programa, $v1= prioridade
 		*/
+		
 		ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), RegisterFile.getUserRegister("$a1").getValue(), RegisterFile.getUserRegister("$v1").getValue(), contexto.getContexto()));
 		
 		SystemIO.printString("Processo adicionado com sucesso: " + RegisterFile.getUserRegister("$a0").getValue() + "\n");
