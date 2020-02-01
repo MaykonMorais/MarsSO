@@ -3,25 +3,26 @@
 
 .text
 
-.macro SyscallFork( %num1, %num, %num2 , %num3, %num4) # create a process
+.macro SyscallFork(%a0) # create a process
 	li $v0, 19 # load number syscall
-	la $a0, %num1
-	la $a1, %num
-	la $v1, %num2
-	la $a3, %num3
-	la $a2, %num4
+	la $a0, %a0
+	syscall
+.end_macro
+
+.macro SyscallFork(%a0, %p)
+	li $v0, 19 # load number syscall
+	la $a0, %a0
+	la $v1 , %p
 	syscall
 .end_macro
 
 .macro SyscallProcessChange 
 	li $v0, 20
-	li $a0, 1
 	syscall
 .end_macro
 
 .macro SyscallProcessTerminate
 	li $v0, 21
-	li $a0, 1
 	syscall
 .end_macro
 

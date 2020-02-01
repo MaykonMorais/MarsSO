@@ -1,18 +1,20 @@
 package mars.mips.so.ProcessManager;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.management.ConstructorParameters;
 
 import mars.mips.hardware.RegisterFile;
 
+
+// armazenar todas as informações de contexto de um processo:
 public class ProcessControlBlock implements Comparable<ProcessControlBlock>{ 
 	
-	private List<Integer> contexto;
+	private List<Integer> contexto = new ArrayList<Integer>();
 	private int initAdress; // adress process running (pc)
 	
-	private int startAdress; 
+	private int startAdress;  
 	private int endAdress; 
+	
 	private int pid;
 	private String stateProcess;
 	private int priority;
@@ -20,23 +22,28 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 	private int priorityMax;
 	private int priorityMin;
 	
-	
 	private int timeExec;
 	
-	public ProcessControlBlock(int initAdress, int endAdress, int pid, String stateProcess, int priority, int priorityMax, int priorityMin, List<Integer> context) {
+	
+	/* Construtores */
+	public ProcessControlBlock() {
 		
-		setInitAdress(initAdress);
-		setStartAdress(initAdress);
-		setStateProcess(stateProcess);
-		setEndAdress(endAdress);
-		setPid(pid);
+	}
+	
+	public ProcessControlBlock(int pc, int fim, int priority, List<Integer> context) {
+		
+		setInitAdress(pc);
+		setStartAdress(pc);
+		setStateProcess("ready");
+		setEndAdress(fim); // fim 
+		
+		//setPid(pid);
 		setPriority(priority);
 		setContexto(context);
-		setPriorityMax(priorityMax);
-		setPriorityMin(priorityMin);
 		this.timeExec = 0;		
 	}
 	
+	// usar este construtor (por enquanto)
 	public ProcessControlBlock(int initAdress, int pid, String stateProcess, int priority, List<Integer> context) {
 		setInitAdress(initAdress);
 		setPid(pid);
@@ -44,7 +51,7 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 		setPriority(priority);
 		setContexto(context);		
 	}
-
+	
 	public ProcessControlBlock(int initAdress, int pid, String stateProcess, List<Integer> context) {
 		
 	}
@@ -147,6 +154,25 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 	public void setTimeExec(int timeExec) {
 		this.timeExec = timeExec;
 	}
+	/*                                    */
+	
+	
+	public void copyRegistersToPCB() { // Para copiar o conteúdo dos registradores físicos do hardware para a PCB
+		for(int i = 0; i < RegisterFile.getRegisters().length; i++)  {
+			contexto.add(i, RegisterFile.getValue(i));
+		}
+		// hi lo
+		contexto.add(RegisterFile.getValue(33));
+		contexto.add(RegisterFile.getValue(34));
+		
+	}
+	
+	// para copiar da PCB para os registradores físicos
+	public void pcbToRegister() {
+		for (int i = 0; i < contexto.size(); i++) {
+			RegisterFile.updateRegister(i, contexto.get(i));
+		}
+	}
 	
 	@Override
 	public int compareTo(ProcessControlBlock arg0) {
@@ -159,11 +185,5 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 		else {
 			return 0;
 		}
-	} 
-	
-	
-	
-	
-	
-	
+	} 	
 }

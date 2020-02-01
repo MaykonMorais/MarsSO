@@ -18,9 +18,9 @@ public class SyscallProcessTerminate extends AbstractSyscall {
 	}
 	
 	public void terminateProcess() {
-		ProcessTable.setRunning(null);
+		System.out.println("Tipo de escalonamento: " + ProcessTable.getTypeScheduler());
 		
-		ProcessTable.processChange();
+		ProcessTable.endProcess(ProcessTable.getTypeScheduler());
 		SystemIO.printString("Processo Finalizado!!\n");
 	}
 }

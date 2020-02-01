@@ -20,22 +20,21 @@ public class SyscallFork extends AbstractSyscall {
 		createProcess();
 	}
 	
-	public void createProcess() {
-		List<Integer> registers = new ArrayList<Integer>();
+	public void createProcess() { // criando meu processo
+		ProcessControlBlock contexto = new ProcessControlBlock(); // criando pcb para o novo processo
 		
-		for(int i = 0; i < RegisterFile.getRegisters().length; i++) {
-			registers.add(RegisterFile.getValue(i));
-		}
-		registers.add(RegisterFile.getValue(33));
-		registers.add(RegisterFile.getValue(34));
+		contexto.copyRegistersToPCB(); // salvando contexto
 		
-		// $a0 = initAdress, $a1 = pid,  
-		//ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), RegisterFile.getUserRegister("$a0").getValue(), "ready", RegisterFile.getUserRegister("$v1").getValue(), registers));
-		
-		
-		ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), 
+		/*ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), 
 				RegisterFile.getUserRegister("$a1").getValue(), RegisterFile.getUserRegister("$a0").getValue(), "ready", RegisterFile.getUserRegister("$v1").getValue(), RegisterFile.getUserRegister("$a2").getValue(),
-				RegisterFile.getUserRegister("$a3").getValue(), registers));
+				RegisterFile.getUserRegister("$a3").getValue(), registers));*/
+		
+		/*
+		 Adicionando processo na tabela de processo
+		 $a0 = label, $a1 = fim do programa, $v1= prioridade
+		*/
+		
+		ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), RegisterFile.getUserRegister("$a1").getValue(), RegisterFile.getUserRegister("$v1").getValue(), contexto.getContexto()));
 		
 		SystemIO.printString("Processo adicionado com sucesso: " + RegisterFile.getUserRegister("$a0").getValue() + "\n");
 	}
