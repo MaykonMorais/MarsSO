@@ -3,8 +3,6 @@ package mars.mips.so.ProcessManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.ConstructorParameters;
-
 import mars.mips.hardware.RegisterFile;
 
 

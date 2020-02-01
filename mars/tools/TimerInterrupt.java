@@ -169,7 +169,8 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 		if(ProcessTable.getRunning()  != null) { // if list are not empty
 			lastAddress = a;
 			counter++;
-			
+			ProcessTable.setTypeScheduler(typePriority.getSelectedItem().toString());
+			System.out.println("Opcao" + ProcessTable.getTypeScheduler() + "\n");
 			if(timerActive.isSelected()) {
 				++countInst;
 				
@@ -178,11 +179,12 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 					++countInter; // interrupcoes
 					countInst = 0;
 					
-					ProcessTable.setTypeScheduler(typePriority.getSelectedItem().toString());
+					
 					ProcessTable.processChange(typePriority.getSelectedItem().toString());
 					SystemIO.printString("Change Process now \n");
 				}
 			}
+			ProcessTable.setTypeScheduler(typePriority.getSelectedItem().toString());
 			updateDisplay();	
 		}
 		

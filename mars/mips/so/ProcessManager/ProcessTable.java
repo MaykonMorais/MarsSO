@@ -11,10 +11,9 @@ import mars.mips.so.ProcessManager.ProcessControlBlock;
 public class ProcessTable {
 	public static String typeScheduler = "FIFO";
 	
-	private static ProcessControlBlock running = new ProcessControlBlock(); // processo em execucao
+	private static ProcessControlBlock running; // processo em execucao
 	// lista de processos prontos
 	private static List<ProcessControlBlock> processListReady = new ArrayList<ProcessControlBlock>();
-	
 	
 	public ProcessTable(ProcessControlBlock process) {
 		ProcessTable.running = process; 
@@ -37,6 +36,8 @@ public class ProcessTable {
 	
 	public static void newProcess(ProcessControlBlock process) {
 		processListReady.add(process);
+		
+		System.out.println(getProcessListReady().get(0).getInitAdress());
 	}
 	
 	
@@ -46,28 +47,46 @@ public class ProcessTable {
 			running.setStateProcess("ready"); // mudando meu estado
 			running.setInitAdress(RegisterFile.getProgramCounter());
 			running.getContexto().clear();
-			running.copyRegistersToPCB(); // salvando meus registradores
 			
+			for(int i = 0; i < RegisterFile.getRegisters().length; i++) {
+				running.getContexto().add(RegisterFile.getValue(i));
+			}
+			running.getContexto().add(RegisterFile.getValue(33));
+			running.getContexto().add(RegisterFile.getValue(34));
 		}
 				
 		
 		if(metodo.equals("FIFO")) { // fifo
-			RegisterFile.setProgramCounter(running.getInitAdress());
-			Schedule.fifo();
-			running.pcbToRegister();
+			if(Schedule.fifo()) {
+				for(int i = 0;  i < running.getContexto().size(); i++) {
+					RegisterFile.updateRegister(i, running.getContexto().get(i));
+				}
+			}
+			if(running != null) {
+				RegisterFile.setProgramCounter(running.getInitAdress());
+			}
 		}
 		else if (metodo.equals("Fixa")) {
-			RegisterFile.setProgramCounter(running.getInitAdress());
-			
-			Schedule.fixedPriority();
-			running.pcbToRegister();
+			if(Schedule.fixedPriority()) {
+				for(int i = 0;  i < running.getContexto().size(); i++) {
+					RegisterFile.updateRegister(i, running.getContexto().get(i));
+				}
+			}
+			if(running != null) {
+				RegisterFile.setProgramCounter(running.getInitAdress());
+			}
 		}
 		
 		else if (metodo.equals("Loteria")) {
-			RegisterFile.setProgramCounter(running.getInitAdress());
 			
-			Schedule.lottery();
-			running.pcbToRegister();
+			if(Schedule.lottery()) {
+				for(int i = 0;  i < running.getContexto().size(); i++) {
+					RegisterFile.updateRegister(i, running.getContexto().get(i));
+				}
+			}
+			if(running != null) {
+				RegisterFile.setProgramCounter(running.getInitAdress());
+			}
 		}
 	}
 	
@@ -75,8 +94,8 @@ public class ProcessTable {
 		return typeScheduler;
 	}
 
-	public static void setTypeScheduler(String typeScheduler) {
-		ProcessTable.typeScheduler = typeScheduler;
+	public static void setTypeScheduler(String x) {
+		ProcessTable.typeScheduler = x;
 	}
 	
 	

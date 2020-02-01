@@ -7,13 +7,12 @@
 	SyscallFork(Programa2, 2)
 	SyscallFork(Idle, 0)
 	#escalonando o primeiro processo
-	SyscallProcessChange
+SyscallProcessChange
 	
 Idle:					
 	loop:
 NOP
 j loop
-
 
 Programa1:					
 		addi $s1, $zero, 1 # valor inicial do contador
@@ -30,4 +29,3 @@ Programa2:
 		beq $s1, $s2, fim2
 		j loop2
 	fim2:	SyscallProcessTerminate
-
