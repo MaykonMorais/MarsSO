@@ -21,9 +21,12 @@ public class SyscallFork extends AbstractSyscall {
 	}
 	
 	public void createProcess() { // criando meu processo
-		ProcessControlBlock contexto = new ProcessControlBlock(); // criando pcb para o novo processo
+		List<Integer> context = new ArrayList<Integer>();
 		
-		contexto.copyRegistersToPCB(); // salvando contexto
+		//ProcessControlBlock contexto = new ProcessControlBlock(); // criando pcb para o novo processo
+		
+		//contexto.copyRegistersToPCB(); // salvando contexto
+		ProcessControlBlock.copyRegisters(context);
 		
 		/*ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), 
 				RegisterFile.getUserRegister("$a1").getValue(), RegisterFile.getUserRegister("$a0").getValue(), "ready", RegisterFile.getUserRegister("$v1").getValue(), RegisterFile.getUserRegister("$a2").getValue(),
@@ -31,11 +34,16 @@ public class SyscallFork extends AbstractSyscall {
 		
 		/*
 		 Adicionando processo na tabela de processo
-		 $a0 = label, $a1 = fim do programa, $v1= prioridade
+		 $a0 = label, $a1 = fim da funcao, $v1= prioridade
 		*/
 		
-		ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), RegisterFile.getUserRegister("$a1").getValue(), RegisterFile.getUserRegister("$v1").getValue(), contexto.getContexto()));
 		
-		SystemIO.printString("Processo adicionado com sucesso: " + RegisterFile.getUserRegister("$a0").getValue() + "\n");
+		ProcessTable.newProcess(new ProcessControlBlock(RegisterFile.getUserRegister("$a0").getValue(), RegisterFile.getUserRegister("$a1").getValue(), RegisterFile.getUserRegister("$v1").getValue(), context));
+		
+		// calculando endereço final 
+		ProcessTable.calculateEndAdress(ProcessTable.getProcessListReady());
+		
+		SystemIO.printString("Processo adicionado com sucesso: \n Endereco Inicio: " + RegisterFile.getUserRegister("$a0").getValue() + "\n Endereco Final: " + RegisterFile.getUserRegister("$v1").getValue()+"\n");
+		
 	}
 }

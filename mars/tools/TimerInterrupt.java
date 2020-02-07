@@ -58,6 +58,7 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 	protected TimerInterrupt(String title, String heading) {
 		super(title, heading);
 	}
+	
 	public TimerInterrupt() {
 		super(name+", " + version, heading);
 	}
@@ -99,7 +100,7 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 		timerConfig.setToolTipText("input time to interrupt");
 		
 		
-		typePriority = new JComboBox(typeOfPriority);
+		typePriority = new JComboBox<String>(typeOfPriority);
 		
 		// Add them to the panel
 		
@@ -170,7 +171,7 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 			lastAddress = a;
 			counter++;
 			ProcessTable.setTypeScheduler(typePriority.getSelectedItem().toString());
-			System.out.println("Opcao" + ProcessTable.getTypeScheduler() + "\n");
+			
 			if(timerActive.isSelected()) {
 				++countInst;
 				
@@ -184,7 +185,6 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 					SystemIO.printString("Change Process now \n");
 				}
 			}
-			ProcessTable.setTypeScheduler(typePriority.getSelectedItem().toString());
 			updateDisplay();	
 		}
 		
