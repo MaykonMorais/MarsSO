@@ -101,8 +101,7 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
-
-
+	
 	public String getStateProcess() {
 		return stateProcess;
 	}
