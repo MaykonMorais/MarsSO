@@ -9,7 +9,7 @@ import mars.mips.hardware.RegisterFile;
 // armazenar todas as informações de contexto de um processo:
 public class ProcessControlBlock implements Comparable<ProcessControlBlock>{ 
 	
-	private List<Integer> contexto = new ArrayList<Integer>();
+	private static List<Integer> contexto = new ArrayList<Integer>();
 	private int initAdress; // adress process running (pc)
 	
 	private int startAdress;  
@@ -22,28 +22,29 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 	private int priorityMax;
 	private int priorityMin;
 	
-	private int timeExec;
-	
+	private int timeExec; 
 	
 	/* Construtores */
 	public ProcessControlBlock() {
 		
 	}
 	
+	// usar este construtor (por enquanto)
 	public ProcessControlBlock(int pc, int fim, int priority, List<Integer> context) {
-		
 		setInitAdress(pc);
+		
+		// registradores limite
 		setStartAdress(pc);
+		setEndAdress(fim);  
+		
 		setStateProcess("ready");
-		setEndAdress(fim); // fim 
 		
 		//setPid(pid);
 		setPriority(priority);
 		setContexto(context);
-		this.timeExec = 0;		
+		//this.timeExec = 0;		
 	}
 	
-	// usar este construtor (por enquanto)
 	public ProcessControlBlock(int initAdress, int pid, String stateProcess, int priority, List<Integer> context) {
 		setInitAdress(initAdress);
 		setPid(pid);
@@ -52,10 +53,6 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 		setContexto(context);		
 	}
 	
-	public ProcessControlBlock(int initAdress, int pid, String stateProcess, List<Integer> context) {
-		
-	}
-
 	public List<Integer> getContexto() {
 		return contexto;
 	}
@@ -157,7 +154,7 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 	/*                                    */
 	
 	
-	public void copyRegistersToPCB() { // Para copiar o conteúdo dos registradores físicos do hardware para a PCB
+	public static void copyRegistersToPCB() { // Para copiar o conteúdo dos registradores físicos do hardware para a PCB
 		for(int i = 0; i < RegisterFile.getRegisters().length; i++)  {
 			contexto.add(i, RegisterFile.getValue(i));
 		}
@@ -167,8 +164,18 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 		
 	}
 	
+	public static void copyRegisters(List<Integer> registradores) {
+		for(int i = 0; i < RegisterFile.getRegisters().length; i++)  {
+			registradores.add(i, RegisterFile.getValue(i));
+		}
+		// hi lo
+		registradores.add(RegisterFile.getValue(33));
+		registradores.add(RegisterFile.getValue(34));
+	}
+	
 	// para copiar da PCB para os registradores físicos
-	public void pcbToRegister() {
+	public static void pcbToRegister() {
+		System.out.println("Passando meu pcb para registradores fisicos!!\n");
 		for (int i = 0; i < contexto.size(); i++) {
 			RegisterFile.updateRegister(i, contexto.get(i));
 		}

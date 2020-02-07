@@ -13,9 +13,9 @@ public class Schedule {
 			ProcessTable.getProcessListReady().add(ProcessTable.getRunning()); // get process runnning and add on List Process ready 
 		}
 		if(ProcessTable.getProcessListReady().size() > 0) {
-			System.out.println("Processo foi adicionado como rodando\n\n");
 			ProcessTable.getProcessListReady().get(0).setStateProcess("running"); // mudando o estado do processo para excutando
 			ProcessTable.setRunning(ProcessTable.getProcessListReady().remove(0)); // retirando da lista de processo de prontos
+			System.out.println("Processo Setado como Executando: " + ProcessTable.getRunning().getInitAdress());
 			return true;
 		}
 		return false;
@@ -40,6 +40,7 @@ public class Schedule {
 		if(ProcessTable.getRunning() != null) {
 			ProcessTable.getProcessListReady().add(ProcessTable.getRunning()); // adicionando processo
 		}
+		
 		if(ProcessTable.getProcessListReady().size() > 0) {
 			// fazer com que seja escolhido um processo entre os processos que estao na fila
 			Random r = new Random();

@@ -1,17 +1,16 @@
 package mars.mips.so.ProcessManager;
 
-import java.util.Queue;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import mars.mips.hardware.RegisterFile;
 import mars.mips.so.ProcessManager.ProcessControlBlock;
 
 public class ProcessTable {
-	public static String typeScheduler = "FIFO";
+	public static String typeScheduler = "FIFO"; // default
 	
 	private static ProcessControlBlock running; // processo em execucao
+	
 	// lista de processos prontos
 	private static List<ProcessControlBlock> processListReady = new ArrayList<ProcessControlBlock>();
 	
@@ -36,16 +35,15 @@ public class ProcessTable {
 	
 	public static void newProcess(ProcessControlBlock process) {
 		processListReady.add(process);
-		
-		System.out.println(getProcessListReady().get(0).getInitAdress());
 	}
 	
 	
 	public static void processChange(String metodo) {
-		
 		if(running != null) {
+			System.out.println("Salvando o contexto do processo que estava executando\n");
+			
 			running.setStateProcess("ready"); // mudando meu estado
-			running.setInitAdress(RegisterFile.getProgramCounter());
+			running.setInitAdress(RegisterFile.getProgramCounter()-4);
 			running.getContexto().clear();
 			
 			for(int i = 0; i < RegisterFile.getRegisters().length; i++) {
@@ -55,15 +53,16 @@ public class ProcessTable {
 			running.getContexto().add(RegisterFile.getValue(34));
 		}
 				
-		
 		if(metodo.equals("FIFO")) { // fifo
+			System.out.println("Endereço que estou: " + RegisterFile.getProgramCounter());
+			
 			if(Schedule.fifo()) {
-				for(int i = 0;  i < running.getContexto().size(); i++) {
+				RegisterFile.setProgramCounter(running.getInitAdress());
+				
+				System.out.println("Indo para: " + RegisterFile.getProgramCounter());
+				for(int i = 0; i < running.getContexto().size(); i++) {
 					RegisterFile.updateRegister(i, running.getContexto().get(i));
 				}
-			}
-			if(running != null) {
-				RegisterFile.setProgramCounter(running.getInitAdress());
 			}
 		}
 		else if (metodo.equals("Fixa")) {
@@ -77,8 +76,7 @@ public class ProcessTable {
 			}
 		}
 		
-		else if (metodo.equals("Loteria")) {
-			
+		else if (metodo.equals("Loteria")) {	
 			if(Schedule.lottery()) {
 				for(int i = 0;  i < running.getContexto().size(); i++) {
 					RegisterFile.updateRegister(i, running.getContexto().get(i));
@@ -104,33 +102,12 @@ public class ProcessTable {
 		processChange(metodo);
 	}
 	
-	
-	/*public static ProcessControlBlock running; 
-	
-	// lista de processos prontos
-	public static LinkedList<ProcessControlBlock> readyProcesses = new LinkedList<ProcessControlBlock>();
-	
-	public static ProcessControlBlock newProcess(int id, int end, int priority) {
-		ProcessControlBlock pcb = new ProcessControlBlock();
-		
-		pcb.setPriority(priority);
-		pcb.setStateProcess(1);
-		pcb.setSup(id);
-		pcb.setInf(end);
-		
-		return pcb;
+	public static void calculateEndAdress(List<ProcessControlBlock> readyProcess) {
+		for(int i = 0; i < readyProcess.size()-1; i++) {
+			if(readyProcess.size() > 1) {
+				readyProcess.get(i).setEndAdress(readyProcess.get(i+1).getInitAdress() -4);				
+			}
+		}
+		ProcessControlBlock.pcbToRegister();
 	}
-	
-	public static void addProcess(ProcessControlBlock process) {
-		readyProcesses.add(process);
-	}
-	
-	public ProcessControlBlock getRunning() {
-		return running;
-	}
-
-	public static void setRunning(ProcessControlBlock running) {
-		running = running;
-	}
-	*/
 }
