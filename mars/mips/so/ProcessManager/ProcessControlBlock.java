@@ -152,29 +152,17 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 	}
 	/*                                    */
 	
-	
-	public static void copyRegistersToPCB() { // Para copiar o conteúdo dos registradores físicos do hardware para a PCB
-		for(int i = 0; i < RegisterFile.getRegisters().length; i++)  {
-			contexto.add(i, RegisterFile.getValue(i));
+	public void copyRegistersToPCB() { // Para copiar o conteúdo dos registradores físicos do hardware para a PCB
+		for(int i = 0; i < 32; i++)  {
+			contexto.add(RegisterFile.getValue(i));
 		}
 		// hi lo
 		contexto.add(RegisterFile.getValue(33));
-		contexto.add(RegisterFile.getValue(34));
-		
-	}
-	
-	public static void copyRegisters(List<Integer> registradores) {
-		for(int i = 0; i < RegisterFile.getRegisters().length; i++)  {
-			registradores.add(i, RegisterFile.getValue(i));
-		}
-		// hi lo
-		registradores.add(RegisterFile.getValue(33));
-		registradores.add(RegisterFile.getValue(34));
+		contexto.add(RegisterFile.getValue(34));	
 	}
 	
 	// para copiar da PCB para os registradores físicos
-	public static void pcbToRegister() {
-		System.out.println("Passando meu pcb para registradores fisicos!!\n");
+	public void pcbToRegister() {
 		for (int i = 0; i < contexto.size(); i++) {
 			RegisterFile.updateRegister(i, contexto.get(i));
 		}

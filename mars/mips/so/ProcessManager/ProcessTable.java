@@ -43,14 +43,16 @@ public class ProcessTable {
 			System.out.println("Salvando o contexto do processo que estava executando\n");
 			
 			running.setStateProcess("ready"); // mudando meu estado
-			running.setInitAdress(RegisterFile.getProgramCounter()-4);
+			running.setInitAdress(RegisterFile.getProgramCounter());
 			running.getContexto().clear();
 			
-			for(int i = 0; i < RegisterFile.getRegisters().length; i++) {
+			running.copyRegistersToPCB();  // salvando contexto
+			/*
+			 for(int i = 0; i < RegisterFile.getRegisters().length; i++) {
 				running.getContexto().add(RegisterFile.getValue(i));
 			}
 			running.getContexto().add(RegisterFile.getValue(33));
-			running.getContexto().add(RegisterFile.getValue(34));
+			running.getContexto().add(RegisterFile.getValue(34));*/
 		}
 				
 		if(metodo.equals("FIFO")) { // fifo
@@ -60,9 +62,13 @@ public class ProcessTable {
 				RegisterFile.setProgramCounter(running.getInitAdress());
 				
 				System.out.println("Indo para: " + RegisterFile.getProgramCounter());
-				for(int i = 0; i < running.getContexto().size(); i++) {
-					RegisterFile.updateRegister(i, running.getContexto().get(i));
+				running.pcbToRegister();
+				
+				/*
+				 for(int i = 0; i < running.getContexto().size(); i++) {
+					//RegisterFile.updateRegister(i, running.getContexto().get(i));
 				}
+				*/
 			}
 		}
 		else if (metodo.equals("Fixa")) {
@@ -102,12 +108,12 @@ public class ProcessTable {
 		processChange(metodo);
 	}
 	
-	public static void calculateEndAdress(List<ProcessControlBlock> readyProcess) {
+	/*public static void calculateEndAdress(List<ProcessControlBlock> readyProcess) {
 		for(int i = 0; i < readyProcess.size()-1; i++) {
 			if(readyProcess.size() > 1) {
 				readyProcess.get(i).setEndAdress(readyProcess.get(i+1).getInitAdress() -4);				
 			}
 		}
 		ProcessControlBlock.pcbToRegister();
-	}
+	}*/
 }

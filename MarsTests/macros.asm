@@ -9,10 +9,12 @@
 	syscall
 .end_macro
 
-.macro SyscallFork(%a0, %p)
+.macro SyscallFork(%a0, %fim)
 	li $v0, 19 # load number syscall
 	la $a0, %a0
-	la $v1 , %p
+	la $v1 , %fim
+	
+	subi $v1, $v1, 4 
 	syscall
 .end_macro
 

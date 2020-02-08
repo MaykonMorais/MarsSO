@@ -39,7 +39,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     public class MyTool extends AbstractMarsToolAndApplication {
    
       private static String heading =  "My First Tool";
-		private static String version = "Version 1.0 (Maykon Morais)";
+      private static String version = "Version 1.0 (Maykon Morais)";
    	         	
    	/**
    	 * Simple constructor, likely used to run a stand-alone memory reference visualizer.

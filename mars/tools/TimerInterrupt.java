@@ -30,8 +30,7 @@ import mars.util.SystemIO;
 public class TimerInterrupt extends AbstractMarsToolAndApplication {
 	private static String name    = "Timer to Interrupt";
     private static String version = "Version 1.0 (Maykon Morais)";
-    private static String heading = "count time to interrupt and schedule process";
-	
+    private static String heading =  "My First Tool";
     
     private int counter = 0;
     private JTextField counterField;
@@ -39,7 +38,7 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
     private JComboBox typePriority;
     String[] typeOfPriority = {"FIFO","Fixa", "Loteria"};
     
-    protected int countTimer = 10;
+    protected int countTimer = 9;
     
     protected int countInter = 0; // counter interrupt
     private JTextField countInterField;
@@ -55,7 +54,7 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
     
     protected int lastAddress = -1;    
     
-	protected TimerInterrupt(String title, String heading) {
+	public TimerInterrupt(String title, String heading) {
 		super(title, heading);
 	}
 	
@@ -68,10 +67,10 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Timer";
 	}
 	public static void main(String[] args) {
-		new TimerInterrupt(heading +", " + version, heading);
+		new TimerInterrupt(heading +", " + version, heading).go();
 	}
 
 	protected void addAsObserver() {
@@ -96,7 +95,7 @@ public class TimerInterrupt extends AbstractMarsToolAndApplication {
 		timerActive.setToolTipText("select timer option");
 		
 		timerConfig = new JSpinner();
-		timerConfig.setModel(new SpinnerNumberModel(10, 2, 100, 1));
+		timerConfig.setModel(new SpinnerNumberModel(9, 2, 100, 1));
 		timerConfig.setToolTipText("input time to interrupt");
 		
 		
