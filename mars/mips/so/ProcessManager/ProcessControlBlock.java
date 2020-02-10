@@ -12,6 +12,7 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 	private static List<Integer> contexto = new ArrayList<Integer>();
 	private int initAdress; // adress process running (pc)
 	
+	// registradores limites de memória
 	private int startAdress;  
 	private int endAdress; 
 	
@@ -19,17 +20,13 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 	private String stateProcess;
 	private int priority;
 	
-	private int priorityMax;
-	private int priorityMin;
-	
-	private int timeExec; 
 	
 	/* Construtores */
 	public ProcessControlBlock() {
 		
 	}
 	
-	// usar este construtor (por enquanto)
+	// usar este construtor
 	public ProcessControlBlock(int pc, int fim, int priority, List<Integer> context) {
 		setInitAdress(pc);
 		
@@ -121,36 +118,7 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 		this.priority = priority;
 	}
 
-
-	public int getPriorityMax() {
-		return priorityMax;
-	}
-
-
-	public void setPriorityMax(int priorityMax) {
-		this.priorityMax = priorityMax;
-	}
-
-
-	public int getPriorityMin() {
-		return priorityMin;
-	}
-
-
-	public void setPriorityMin(int priorityMin) {
-		this.priorityMin = priorityMin;
-	}
-
-
-	public int getTimeExec() {
-		return timeExec;
-	}
-
-
-	public void setTimeExec(int timeExec) {
-		this.timeExec = timeExec;
-	}
-	/*                                    */
+	/* Recuperando Informações */
 	
 	public void copyRegistersToPCB() { // Para copiar o conteúdo dos registradores físicos do hardware para a PCB
 		for(int i = 0; i < 32; i++)  {
@@ -167,7 +135,7 @@ public class ProcessControlBlock implements Comparable<ProcessControlBlock>{
 			RegisterFile.updateRegister(i, contexto.get(i));
 		}
 	}
-	
+
 	@Override
 	public int compareTo(ProcessControlBlock arg0) {
 		if(this.priority < arg0.getPriority()) {
