@@ -31,6 +31,8 @@ public class Schedule {
 			Collections.sort(ProcessTable.getProcessListReady()); // ordenando processo em ordem de prioridade alta na fila
 			ProcessTable.getProcessListReady().get(0).setStateProcess("running"); // executando processo de mais alta prioridade
 			ProcessTable.setRunning(ProcessTable.getProcessListReady().remove(0)); // retirando da lista de processo de prontos
+			
+			System.out.println("Processo Setado como Executando Prioridade Fixa: " + ProcessTable.getRunning().getInitAdress());
 			return true;
 		}
 		return false;
@@ -50,6 +52,8 @@ public class Schedule {
 						
 			ProcessTable.getProcessListReady().get(0).setStateProcess("running"); // mudando o estado do processo para excutando
 			ProcessTable.setRunning(ProcessTable.getProcessListReady().remove(element)); // retirando elemento escolhido aleatoriamento da lista de pronto
+			System.out.println("Processo Setado como Executando Loteria: " + ProcessTable.getRunning().getInitAdress());
+			
 			return true;
 		}
 		return false;
